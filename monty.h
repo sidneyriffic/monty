@@ -17,6 +17,8 @@ typedef struct stack_s
 	struct stack_s *next;
 } stack_t;
 
+extern stack_t *montytop;
+
 /**
  * struct instruction_s - opcoode and its function
  * @opcode: the opcode
@@ -31,28 +33,37 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/* montyparse.c */
-instruction_t *initopcodes();
+union montyfunctype
+{
+	void (*toponly)(stack_t **top);
+	void (*pushmode)(stack_t **top, int mode);
+	void (*topbot)(stack_t **top, stack_t **bot);
+};
+
+typedef struct optype
+{
+	char *opcode;
+	montyfunctype func;
+}
 
 /* opstack.c */
-int push(stack_t **top, int mode);
-int pop(stack_t **top);
-int swap(stack_t **top);
+void push(stack_t **top, int mode);
+void pop(stack_t **top);
+void swap(stack_t **top);
 void rotl(stack_t **top, stack_t **bot);
 void rotr(stack_t **top, stack_t **bot);
 
 /* opprint.c */
 void pall(stack_t *top);
-int pint(stack_t *top);
-int pchar(stack_t *top);
+void pint(stack_t *top);
+void pchar(stack_t *top);
 void pstr(stack_t *top);
 
 /* opmath.c */
-int add(stack_t **top);
-int sub(stack_t **top);
-int mul(stack_t **top);
-int div(stack_t **top);
-int mod(stack_t **top);
-
+void add(stack_t **top);
+void sub(stack_t **top);
+void mul(stack_t **top);
+void div(stack_t **top);
+void mod(stack_t **top);
 
 #endif
