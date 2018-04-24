@@ -68,3 +68,27 @@ void swap(stack_t **top, stack_t **bot)
 	if ((*bot)->prev != NULL)
 		*bot = (*bot)->prev;
 }
+
+void rotl(stack_t **top, stack_t **bot)
+{
+	stack_t *ptrt = *top, *ptrb = *bot;
+
+	ptrt->next = ptrb;
+	ptrb->prev = ptrt;
+	*top = ptrt->prev;
+	(*top)->next = NULL;
+	*bot = ptrt;
+	ptrt->prev = NULL;
+}
+
+void rotr(stack_t **top, stack_t **bot)
+{
+	stack_t *ptrt = *top, *ptrb = *bot;
+
+	ptrt->next = ptrb;
+	ptrb->prev = ptrt;
+	*bot = ptrb->next;
+	(*bot)->prev = NULL;
+	*top = ptrb;
+	ptrb->next = NULL;
+}

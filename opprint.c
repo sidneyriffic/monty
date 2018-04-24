@@ -22,10 +22,12 @@ void pint(stack_t **top)
 void pchar(stack_t **top)
 {
 	stack_t *ptr = *top;
+
+	printf("In pchar\n");
 	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pint, stack empty");
-	if (ptr->n > 127 || ptr->n < 0)
 		exitwrap(EXIT_FAILURE, "can't pchar, stack empty");
+	if (ptr->n > 127 || ptr->n < 0)
+		exitwrap(EXIT_FAILURE, "can't pchar, value out of range");
 	printf("%c\n", ptr->n);
 }
 
@@ -33,7 +35,7 @@ void pstr(stack_t **top)
 {
 	stack_t *ptr = *top;
 	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pint, stack empty");
+		printf("\n");
 	while (ptr != NULL && !(ptr->n > 127 || ptr->n < 1))
 	{
 		printf("%c\n", ptr->n);

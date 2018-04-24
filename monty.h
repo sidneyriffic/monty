@@ -50,7 +50,7 @@ typedef struct optype
 } optype;
 
 /* from montyparse.c */
-void exitwrap(int exitcode);
+void exitwrap(int exitcode, char *existring);
 
 /* opstack.c */
 void push(stack_t **top, stack_t **bot, int val, int mode);

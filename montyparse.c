@@ -5,8 +5,11 @@
 
 #define MONTYOPCT 14
 
-/* should free stack here */
-void exitwrap(int exitcode)
+static size_t linenum;
+
+/* should free stack here. if exit string is NULL, assume proper text already
+ * printed */
+void exitwrap(int exitcode, char *exitstring)
 {
 	exit(exitcode);
 }
@@ -18,12 +21,12 @@ int montyparse(FILE *script, optype *ops)
 {
 	int val, mode = STACKMODE;
 	size_t len = 0;
-	ssize_t linenum = 1;
 	stack_t *top = NULL, *bot = NULL;
 	char *buffer = NULL, *tok;
 
 	while (getline(&buffer, &len, script) > 0)
 	{
+		printf("top %p bot %p: Got %s", top, bot, buffer);
 		tok = strtok(buffer, " \n");
 		if (tok == NULL)
 			return (0);
@@ -36,7 +39,7 @@ int montyparse(FILE *script, optype *ops)
 			mode = STACKMODE;
 		else
 		{
-			while (!strcmp(tok, ops[val].opcode) && val < MONTYOPCT)
+			while (strcmp(tok, ops[val].opcode) && val < MONTYOPCT)
 				val++;
 			if (val == MONTYOPCT)
 				return (-2);
@@ -45,17 +48,13 @@ int montyparse(FILE *script, optype *ops)
 				tok = strtok(NULL, " \n");
 				if (tok == NULL)
 					return (-4);
-				if (top == NULL)
-					bot = NULL;
-				ops[0].func.pushmode(&top, &bot, val, mode);
-				if (bot == NULL)
-					bot = top;
+				ops[0].func.pushmode(&top, &bot, atoi(tok), mode);
 			}
-			if (val < 4)
+			else if (val < 4)
 				ops[val].func.topbot(&top, &bot);
-			if (val < MONTYOPCT)
+			else if (val < MONTYOPCT)
 				ops[val].func.toponly(&top);
-			return (-1);
+			else return (-1);
 		}
 		linenum++;
 	}
