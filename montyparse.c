@@ -5,11 +5,15 @@
 
 #define MONTYOPCT 14
 
+/* should free stack here */
 void exitwrap(int exitcode)
 {
 	exit(exitcode);
 }
 
+/* note that bot is updated to NULL only in the case of pushing with
+ * NULL top. All other opcodes using bot should check if top is NULL
+ * first. */
 int montyparse(FILE *script, optype *ops)
 {
 	int val, mode = 0;
@@ -24,12 +28,12 @@ int montyparse(FILE *script, optype *ops)
 		if (tok == NULL)
 			return (0);
 		val = 0;
-		if (!strcmp(tok, "queue"))
+		if (*tok == '#' || !strcmp(tok, "nop"))
+			;
+		else if (!strcmp(tok, "queue"))
 			mode = 1;
 		else if (!strcmp(tok, "queue"))
 			mode = 0;
-		else if (!strcmp(tok, "nop"))
-			;
 		else
 		{
 			while (!strcmp(tok, ops[val].opcode) && val < MONTYOPCT)
@@ -41,6 +45,8 @@ int montyparse(FILE *script, optype *ops)
 				tok = strtok(NULL, " \n");
 				if (tok == NULL)
 					return (-4);
+				if (top == NULL)
+					bot = NULL;
 				ops[0].func.pushmode(&top, val, mode);
 				if (bot == NULL)
 					bot = top;
