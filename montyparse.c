@@ -3,22 +3,57 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MONTYOPCT 14
+
+void exitwrap(int exitcode)
+{
+	exit(exitcode);
+}
+
 int montyparse(FILE *script, optype *ops)
 {
-	int val;
+	int val, mode = 0;
 	size_t len = 0;
-	ssize_t glret, linenum = 0;
-	stack_t *bot = NULL, *top = NULL;
+	ssize_t linenum = 0;
+	stack_t *top = NULL, *bot = NULL;
 	char *buffer = NULL, *tok;
 
-	while ((glret = getline(&buffer, &len, script)) > 0)
+	while (getline(&buffer, &len, script) > 0)
 	{
 		tok = strtok(buffer, " \n");
 		if (tok == NULL)
-			return (-2);
+			return (0);
+		val = 0;
+		if (!strcmp(tok, "queue"))
+			mode = 1;
+		else if (!strcmp(tok, "queue"))
+			mode = 0;
+		else if (!strcmp(tok, "nop"))
+			;
+		else
+		{
+			while (!strcmp(tok, ops[val].opcode) && val < MONTYOPCT)
+				val++;
+			if (val == MONTYOPCT)
+				return (-2);
+			if (val == 0)
+			{
+				tok = strtok(NULL, " \n");
+				if (tok == NULL)
+					return (-4);
+				ops[0].func.pushmode(&top, val, mode);
+				if (bot == NULL)
+					bot = top;
+			}
+			if (val < 4)
+				ops[val].func.topbot(&top, &bot);
+			if (val < MONTYOPCT)
+				ops[val].func.toponly(&top);
+			return (-1);
+		}
+		linenum++;
 	}
-	if (glret == -1)
-		return (-1);
+	return (0);
 }
 
 optype *initops()
@@ -27,14 +62,14 @@ optype *initops()
 
 	head[0].opcode = "push";
 	head[0].func.pushmode = push;
-	head[1].opcode = "pop";
-	head[1].func.toponly = pop;
-	head[2].opcode = "swap";
-	head[2].func.toponly = swap;
-	head[3].opcode = "rotl";
-	head[3].func.topbot = rotl;
-	head[4].opcode = "rotr";
-	head[4].func.topbot = rotr;
+	head[1].opcode = "rotl";
+	head[1].func.topbot = rotl;
+	head[2].opcode = "rotr";
+	head[2].func.topbot = rotr;
+	head[3].opcode = "swap";
+	head[3].func.topbot = swap;
+	head[4].opcode = "pop";
+	head[4].func.toponly = pop;
 	head[5].opcode = "pall";
 	head[5].func.toponly = pall;
 	head[6].opcode = "pint";
@@ -50,7 +85,7 @@ optype *initops()
 	head[11].opcode = "mul";
 	head[11].func.toponly = mul;
 	head[12].opcode = "div";
-	head[12].func.toponly = div;
+	head[12].func.toponly = _div;
 	head[13].opcode = "mod";
 	head[13].func.toponly = mod;
 
@@ -76,10 +111,6 @@ int main(int ac, char *av[])
 	}
 	ops = initops();
 	ret = montyparse(script, ops);
-	if (ret == -1)
-	{
-		printf("Error: Can't open file %s\n", av[1]);
-		return (EXIT_FAILURE);
-	}
+	fclose(script);
 	return (0);
 }
