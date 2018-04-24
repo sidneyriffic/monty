@@ -50,7 +50,7 @@ typedef struct optype
 
 /* opstack.c */
 void push(stack_t **top, int val, int mode);
-void pop(stack_t **top, stack_t **bot);
+void pop(stack_t **top);
 void swap(stack_t **top, stack_t **bot);
 void rotl(stack_t **top, stack_t **bot);
 void rotr(stack_t **top, stack_t **bot);
