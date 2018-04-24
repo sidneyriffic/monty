@@ -5,12 +5,22 @@
 
 #define MONTYOPCT 14
 
-static size_t linenum;
+static unsigned long linenum = 1;
 
 /* should free stack here. if exit string is NULL, assume proper text already
  * printed */
-void exitwrap(int exitcode, char *exitstring)
+void exitwrap(int exitcode, char *exitstring, stack_t *top)
 {
+	stack_t *ptr = top;
+
+	if (exitstring != NULL)
+		printf("L%lu: %s\n", linenum, exitstring);
+	while (top != NULL)
+	{
+		ptr = top->prev;
+		free(top);
+		top = ptr;
+	}
 	exit(exitcode);
 }
 
@@ -58,6 +68,8 @@ int montyparse(FILE *script, optype *ops)
 		}
 		linenum++;
 	}
+	fclose(script);
+	exitwrap(EXIT_SUCCESS, NULL, top);
 	return (0);
 }
 
@@ -100,7 +112,6 @@ optype *initops()
 int main(int ac, char *av[])
 {
 	FILE *script;
-	int ret;
 	optype *ops;
 
 	if (ac != 2)
@@ -115,8 +126,7 @@ int main(int ac, char *av[])
 		return (EXIT_FAILURE);
 	}
 	ops = initops();
-	ret = montyparse(script, ops);
-	fclose(script);
+	montyparse(script, ops);
 	return (0);
 }
 

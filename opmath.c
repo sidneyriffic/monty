@@ -8,9 +8,9 @@ void add(stack_t **top)
 	long num;
 
 	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack");
+		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
 	if (ptr->prev == NULL)
-		exitwrap(EXIT_FAILURE, "can't add, stack too short");
+		exitwrap(EXIT_FAILURE, "can't add, stack too short", *top);
 	else
 	{
 		num = ptr->n;
@@ -28,9 +28,9 @@ void sub(stack_t **top)
 	long num;
 
 	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack");
+		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
 	if (ptr->prev == NULL)
-		exitwrap(EXIT_FAILURE, "can't sub, stack too short");
+		exitwrap(EXIT_FAILURE, "can't sub, stack too short", *top);
 	else
 	{
 		num = ptr->n;
@@ -48,9 +48,9 @@ void mul(stack_t **top)
 	long num;
 
 	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack");
+		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
 	if (ptr->prev == NULL)
-		exitwrap(EXIT_FAILURE, "can't mul, stack too short");
+		exitwrap(EXIT_FAILURE, "can't mul, stack too short", *top);
 	else
 	{
 		num = ptr->n;
@@ -68,14 +68,14 @@ void _div(stack_t **top)
 	long num;
 
 	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack");
+		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
 	if (ptr->prev == NULL)
-		exitwrap(EXIT_FAILURE, "can't div, stack too short");
+		exitwrap(EXIT_FAILURE, "can't div, stack too short", *top);
 	else
 	{
 		num = ptr->n;
 		if (num == 0)
-			exitwrap(EXIT_FAILURE, "division by zero");
+			exitwrap(EXIT_FAILURE, "division by zero", *top);
 		ptr = ptr->prev;
 		ptr->next = NULL;
 		free(*top);
@@ -90,14 +90,14 @@ void mod(stack_t **top)
 	long num;
 
 	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack");
+		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
 	if (ptr->prev == NULL)
-		exitwrap(EXIT_FAILURE, "can't mod, stack too short");
+		exitwrap(EXIT_FAILURE, "can't mod, stack too short", *top);
 	else
 	{
 		num = ptr->n;
 		if (num == 0)
-			exitwrap(EXIT_FAILURE, "division by zero");
+			exitwrap(EXIT_FAILURE, "division by zero", *top);
 		ptr = ptr->prev;
 		ptr->next = NULL;
 		free(*top);

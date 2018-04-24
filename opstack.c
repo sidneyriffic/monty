@@ -1,4 +1,6 @@
 #include "monty.h"
+#include <stdio.h>
+
 
 void push(stack_t **top, stack_t **bot, int val, int mode)
 {
@@ -7,8 +9,8 @@ void push(stack_t **top, stack_t **bot, int val, int mode)
 	ptr = malloc(sizeof(stack_t));
 	if (ptr == NULL)
 	{
-		/* print malloc fail and exit */
-		exit(-1);
+		printf("Error: malloc failed\n");
+		exitwrap(EXIT_FAILURE, NULL, *top);
 	}
 	ptr->n = val;
 	if (*top == NULL)
@@ -39,7 +41,7 @@ void pop(stack_t **top)
 	stack_t *ptr = *top;
 
 	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack");
+		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
 	if (ptr->prev == NULL)
 	{
 		free(*top);
@@ -59,7 +61,7 @@ void swap(stack_t **top, stack_t **bot)
 	stack_t *ptr = *top;
 
 	if (ptr == NULL || ptr->prev == NULL)
-		exitwrap(EXIT_FAILURE, "can't swap, stack too short");
+		exitwrap(EXIT_FAILURE, "can't swap, stack too short", *top);
 	ptr = ptr->prev;
 	(*top)->prev = ptr->prev;
 	ptr->next = (*top)->next;

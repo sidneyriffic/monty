@@ -15,7 +15,7 @@ void pall(stack_t **top)
 void pint(stack_t **top)
 {
 	if (*top == NULL)
-		exitwrap(EXIT_FAILURE, "can't pint, stack empty");
+		exitwrap(EXIT_FAILURE, "can't pint, stack empty", *top);
 	printf("%d\n", (*top)->n);
 }
 
@@ -25,9 +25,9 @@ void pchar(stack_t **top)
 
 	printf("In pchar\n");
 	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pchar, stack empty");
+		exitwrap(EXIT_FAILURE, "can't pchar, stack empty", *top);
 	if (ptr->n > 127 || ptr->n < 0)
-		exitwrap(EXIT_FAILURE, "can't pchar, value out of range");
+		exitwrap(EXIT_FAILURE, "can't pchar, value out of range", *top);
 	printf("%c\n", ptr->n);
 }
 
