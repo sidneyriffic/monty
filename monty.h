@@ -1,6 +1,8 @@
 #ifndef MONTYH
 #define MONTYH
 
+#define EXIT_FAILURE 1
+
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -43,8 +45,8 @@ union montyfunctype
 typedef struct optype
 {
 	char *opcode;
-	montyfunctype func;
-}
+	union montyfunctype func;
+} optype;
 
 /* opstack.c */
 void push(stack_t **top, int mode);
@@ -54,10 +56,10 @@ void rotl(stack_t **top, stack_t **bot);
 void rotr(stack_t **top, stack_t **bot);
 
 /* opprint.c */
-void pall(stack_t *top);
-void pint(stack_t *top);
-void pchar(stack_t *top);
-void pstr(stack_t *top);
+void pall(stack_t **top);
+void pint(stack_t **top);
+void pchar(stack_t **top);
+void pstr(stack_t **top);
 
 /* opmath.c */
 void add(stack_t **top);
