@@ -16,9 +16,9 @@ void exitwrap(int exitcode)
  * first. */
 int montyparse(FILE *script, optype *ops)
 {
-	int val, mode = 0;
+	int val, mode = STACKMODE;
 	size_t len = 0;
-	ssize_t linenum = 0;
+	ssize_t linenum = 1;
 	stack_t *top = NULL, *bot = NULL;
 	char *buffer = NULL, *tok;
 
@@ -31,9 +31,9 @@ int montyparse(FILE *script, optype *ops)
 		if (*tok == '#' || !strcmp(tok, "nop"))
 			;
 		else if (!strcmp(tok, "queue"))
-			mode = 1;
+			mode = QUEUEMODE;
 		else if (!strcmp(tok, "queue"))
-			mode = 0;
+			mode = STACKMODE;
 		else
 		{
 			while (!strcmp(tok, ops[val].opcode) && val < MONTYOPCT)
@@ -47,7 +47,7 @@ int montyparse(FILE *script, optype *ops)
 					return (-4);
 				if (top == NULL)
 					bot = NULL;
-				ops[0].func.pushmode(&top, val, mode);
+				ops[0].func.pushmode(&top, &bot, val, mode);
 				if (bot == NULL)
 					bot = top;
 			}
@@ -120,3 +120,5 @@ int main(int ac, char *av[])
 	fclose(script);
 	return (0);
 }
+
+#undef MONTYOPCT

@@ -3,6 +3,9 @@
 
 #include <stdlib.h>
 
+#define STACKMODE 0
+#define QUEUEMODE 1
+
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -36,7 +39,7 @@ typedef struct instruction_s
 union montyfunctype
 {
 	void (*toponly)(stack_t **top);
-	void (*pushmode)(stack_t **top, int val, int mode);
+	void (*pushmode)(stack_t **top, stack_t **bot, int val, int mode);
 	void (*topbot)(stack_t **top, stack_t **bot);
 };
 
@@ -50,7 +53,7 @@ typedef struct optype
 void exitwrap(int exitcode);
 
 /* opstack.c */
-void push(stack_t **top, int val, int mode);
+void push(stack_t **top, stack_t **bot, int val, int mode);
 void pop(stack_t **top);
 void swap(stack_t **top, stack_t **bot);
 void rotl(stack_t **top, stack_t **bot);
