@@ -19,8 +19,6 @@ typedef struct stack_s
 	struct stack_s *next;
 } stack_t;
 
-extern stack_t *montytop;
-
 /**
  * struct instruction_s - opcoode and its function
  * @opcode: the opcode
@@ -47,6 +45,9 @@ typedef struct optype
 	char *opcode;
 	union montyfunctype func;
 } optype;
+
+/* from montyparse.c */
+void exitwrap(int exitcode);
 
 /* opstack.c */
 void push(stack_t **top, int val, int mode);
