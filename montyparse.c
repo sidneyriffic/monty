@@ -26,6 +26,14 @@ void exitwrap(int exitcode, char *exitstring, stack_t *top)
 	exit(exitcode);
 }
 
+int isnumstr(char *str)
+{
+	while(*str != 0)
+		if (*str <'0' || *str++ > '9')
+			return (0);
+	return (1);
+}
+
 /* note that bot is updated to NULL only in the case of pushing with
  * NULL top. All other opcodes using bot should check if top is NULL
  * first. */
@@ -56,7 +64,7 @@ int montyparse(optype *ops)
 			if (val == 0)
 			{
 				tok = strtok(NULL, "\n ");
-				if (tok == NULL)
+				if (tok == NULL || !isnumstr(tok))
 					exitwrap(EXIT_FAILURE, "usage: push integer", top);
 				ops[0].func.pushmode(&top, &bot, atoi(tok), mode);
 			}
@@ -128,6 +136,7 @@ int main(int ac, char *av[])
 		return (EXIT_FAILURE);
 	}
 	ops = initops();
+	mglob.linenum = 1;
 	montyparse(ops);
 	return (0);
 }
