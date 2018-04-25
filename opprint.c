@@ -23,7 +23,6 @@ void pchar(stack_t **top)
 {
 	stack_t *ptr = *top;
 
-	printf("In pchar\n");
 	if (ptr == NULL)
 		exitwrap(EXIT_FAILURE, "can't pchar, stack empty", *top);
 	if (ptr->n > 127 || ptr->n < 0)
