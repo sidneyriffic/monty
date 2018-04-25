@@ -29,23 +29,22 @@ void exitwrap(int exitcode, char *exitstring, stack_t *top)
  * first. */
 int montyparse(FILE *script, optype *ops)
 {
-	int val, mode = STACKMODE;
-	size_t len = 0;
+	size_t len = 0, val, mode = STACKMODE;
 	stack_t *top = NULL, *bot = NULL;
 	char *buffer = NULL, *tok;
 
 	while (getline(&buffer, &len, script) > 0)
 	{
 		printf("top %p bot %p: Got %s", top, bot, buffer);
-		tok = strtok(buffer, " \n");
+		tok = strtok(buffer, "\n ");
 		if (tok == NULL)
-			return (0);
+			exitwrap(EXIT_SUCCESS, NULL, top);
 		val = 0;
 		if (*tok == '#' || !strcmp(tok, "nop"))
 			;
 		else if (!strcmp(tok, "queue"))
 			mode = QUEUEMODE;
-		else if (!strcmp(tok, "queue"))
+		else if (!strcmp(tok, "stack"))
 			mode = STACKMODE;
 		else
 		{
@@ -55,16 +54,21 @@ int montyparse(FILE *script, optype *ops)
 				return (-2);
 			if (val == 0)
 			{
-				tok = strtok(NULL, " \n");
+				tok = strtok(NULL, "\n ");
 				if (tok == NULL)
-					return (-4);
+					exitwrap(EXIT_FAILURE, "usage: push integer", top);
+				printf("Need to check if push value is an int\n");
 				ops[0].func.pushmode(&top, &bot, atoi(tok), mode);
 			}
 			else if (val < 4)
 				ops[val].func.topbot(&top, &bot);
 			else if (val < MONTYOPCT)
 				ops[val].func.toponly(&top);
-			else return (-1);
+			else
+			{
+				printf("L%ld: unknown instruction %s", linenum, tok);
+				exitwrap(EXIT_FAILURE, NULL, top);
+			}
 		}
 		linenum++;
 	}

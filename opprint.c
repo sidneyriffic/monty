@@ -34,6 +34,7 @@ void pchar(stack_t **top)
 void pstr(stack_t **top)
 {
 	stack_t *ptr = *top;
+
 	if (ptr == NULL)
 		printf("\n");
 	while (ptr != NULL && !(ptr->n > 127 || ptr->n < 1))
