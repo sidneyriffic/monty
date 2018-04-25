@@ -67,6 +67,7 @@ void swap(stack_t **top, stack_t **bot)
 	ptr->next = (*top)->next;
 	ptr->prev = *top;
 	(*top)->next = ptr;
+	*top = ptr;
 	if ((*bot)->prev != NULL)
 		*bot = (*bot)->prev;
 }
