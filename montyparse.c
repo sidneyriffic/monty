@@ -28,8 +28,16 @@ void exitwrap(int exitcode, char *exitstring, stack_t *top)
 
 int isnumstr(char *str)
 {
+	if (*str == '-')
+	{
+		str++;
+		if (*str < '0' || *str > '9')
+			return (0);
+		else
+			str++;
+	}
 	while(*str != 0)
-		if (*str <'0' || *str++ > '9')
+		if (*str < '0' || *str++ > '9')
 			return (0);
 	return (1);
 }
