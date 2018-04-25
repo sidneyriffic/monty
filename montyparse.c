@@ -64,12 +64,17 @@ int montyparse(FILE *script, optype *ops)
 				ops[val].func.toponly(&top);
 			else
 			{
+				free(buffer);
 				printf("L%ld: unknown instruction %s", linenum, tok);
 				exitwrap(EXIT_FAILURE, NULL, top);
 			}
+			free(buffer);
+			buffer = NULL;
+			len = 0;
 		}
 		linenum++;
 	}
+	free(buffer);
 	fclose(script);
 	exitwrap(EXIT_SUCCESS, NULL, top);
 	return (0);
