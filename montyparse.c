@@ -5,7 +5,7 @@
 
 #define MONTYOPCT 14
 
-static unsigned long linenum = 1;
+static montyglob mglob;
 
 /* should free stack here. if exit string is NULL, assume proper text already
  * printed */
@@ -14,28 +14,30 @@ void exitwrap(int exitcode, char *exitstring, stack_t *top)
 	stack_t *ptr = top;
 
 	if (exitstring != NULL)
-		printf("L%lu: %s\n", linenum, exitstring);
+		dprintf(2, "L%lu: %s\n", mglob.linenum, exitstring);
 	while (top != NULL)
 	{
 		ptr = top->prev;
 		free(top);
 		top = ptr;
 	}
+	free(mglob.buffer);
+	fclose(mglob.script);
 	exit(exitcode);
 }
 
 /* note that bot is updated to NULL only in the case of pushing with
  * NULL top. All other opcodes using bot should check if top is NULL
  * first. */
-int montyparse(FILE *script, optype *ops)
+int montyparse(optype *ops)
 {
 	size_t len = 0, val, mode = STACKMODE;
 	stack_t *top = NULL, *bot = NULL;
-	char *buffer = NULL, *tok;
+	char *tok;
 
-	while (getline(&buffer, &len, script) > 0)
+	while (getline(&mglob.buffer, &len, mglob.script) > 0)
 	{
-		tok = strtok(buffer, "\n ");
+		tok = strtok(mglob.buffer, "\n ");
 		if (tok == NULL)
 			exitwrap(EXIT_SUCCESS, NULL, top);
 		val = 0;
@@ -64,18 +66,12 @@ int montyparse(FILE *script, optype *ops)
 				ops[val].func.toponly(&top);
 			else
 			{
-				free(buffer);
-				printf("L%ld: unknown instruction %s", linenum, tok);
+				dprintf(2, "L%ld: unknown instruction %s", mglob.linenum, tok);
 				exitwrap(EXIT_FAILURE, NULL, top);
 			}
-			free(buffer);
-			buffer = NULL;
-			len = 0;
 		}
-		linenum++;
+		mglob.linenum++;
 	}
-	free(buffer);
-	fclose(script);
 	exitwrap(EXIT_SUCCESS, NULL, top);
 	return (0);
 }
@@ -118,22 +114,21 @@ optype *initops()
 
 int main(int ac, char *av[])
 {
-	FILE *script;
 	optype *ops;
 
 	if (ac != 2)
 	{
-		printf("USAGE: monty file\n");
+		dprintf(2, "USAGE: monty file\n");
 		return (EXIT_FAILURE);
 	}
-	script = fopen(av[1], "r");
-	if (script == NULL)
+	mglob.script = fopen(av[1], "r");
+	if (mglob.script == NULL)
 	{
-		printf("Error: Can't open file %s\n", av[1]);
+		dprintf(2, "Error: Can't open file %s\n", av[1]);
 		return (EXIT_FAILURE);
 	}
 	ops = initops();
-	montyparse(script, ops);
+	montyparse(ops);
 	return (0);
 }
 

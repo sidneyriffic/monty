@@ -1,6 +1,7 @@
 #ifndef MONTYH
 #define MONTYH
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #define STACKMODE 0
@@ -48,6 +49,13 @@ typedef struct optype
 	char *opcode;
 	union montyfunctype func;
 } optype;
+
+typedef struct montyglob
+{
+	char *buffer;
+	unsigned long linenum;
+	FILE* script;
+} montyglob;
 
 /* from montyparse.c */
 void exitwrap(int exitcode, char *existring, stack_t *top);
