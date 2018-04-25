@@ -35,7 +35,6 @@ int montyparse(FILE *script, optype *ops)
 
 	while (getline(&buffer, &len, script) > 0)
 	{
-		printf("top %p bot %p: Got %s", top, bot, buffer);
 		tok = strtok(buffer, "\n ");
 		if (tok == NULL)
 			exitwrap(EXIT_SUCCESS, NULL, top);
@@ -57,7 +56,6 @@ int montyparse(FILE *script, optype *ops)
 				tok = strtok(NULL, "\n ");
 				if (tok == NULL)
 					exitwrap(EXIT_FAILURE, "usage: push integer", top);
-				printf("Need to check if push value is an int\n");
 				ops[0].func.pushmode(&top, &bot, atoi(tok), mode);
 			}
 			else if (val < 4)
