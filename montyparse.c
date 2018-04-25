@@ -53,7 +53,7 @@ int montyparse(optype *ops)
 
 	while (getline(&mglob.buffer, &len, mglob.script) > 0)
 	{
-		tok = strtok(mglob.buffer, "\n ");
+		tok = strtok(mglob.buffer, "\n\r\t ");
 		if (tok == NULL)
 			exitwrap(EXIT_SUCCESS, NULL, top);
 		val = 0;
@@ -71,7 +71,7 @@ int montyparse(optype *ops)
 				return (-2);
 			if (val == 0)
 			{
-				tok = strtok(NULL, "\n ");
+				tok = strtok(NULL, "\n\r\t ");
 				if (tok == NULL || !isnumstr(tok))
 					exitwrap(EXIT_FAILURE, "usage: push integer", top);
 				ops[0].func.pushmode(&top, &bot, atoi(tok), mode);
