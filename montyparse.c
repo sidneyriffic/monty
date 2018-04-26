@@ -70,10 +70,8 @@ int montyparse(optype *ops)
 			mode = STACKMODE;
 		else
 		{
-			while (strcmp(tok, ops[val].opcode) && val < MONTYOPCT)
+			while (val < MONTYOPCT && strcmp(tok, ops[val].opcode))
 				val++;
-			if (val == MONTYOPCT)
-				return (-2);
 			if (val == 0)
 			{
 				tok = strtok(NULL, "\n ");
@@ -87,7 +85,7 @@ int montyparse(optype *ops)
 				ops[val].func.toponly(&top);
 			else
 			{
-				printf("L%ld: unknown instruction %s", mglob.linenum, tok);
+				printf("L%ld: unknown instruction %s\n", mglob.linenum, tok);
 				exitwrap(EXIT_FAILURE, NULL, top);
 			}
 		}
