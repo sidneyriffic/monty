@@ -9,7 +9,7 @@ void push(stack_t **top, stack_t **bot, int val, int mode)
 	ptr = malloc(sizeof(stack_t));
 	if (ptr == NULL)
 	{
-		dprintf(2, "Error: malloc failed\n");
+		printf("Error: malloc failed\n");
 		exitwrap(EXIT_FAILURE, NULL, *top);
 	}
 	ptr->n = val;

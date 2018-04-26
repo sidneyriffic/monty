@@ -14,7 +14,7 @@ void exitwrap(int exitcode, char *exitstring, stack_t *top)
 	stack_t *ptr = top;
 
 	if (exitstring != NULL)
-		dprintf(2, "L%lu: %s\n", mglob.linenum, exitstring);
+		printf("L%lu: %s\n", mglob.linenum, exitstring);
 	while (top != NULL)
 	{
 		ptr = top->prev;
@@ -82,7 +82,7 @@ int montyparse(optype *ops)
 				ops[val].func.toponly(&top);
 			else
 			{
-				dprintf(2, "L%ld: unknown instruction %s", mglob.linenum, tok);
+				printf("L%ld: unknown instruction %s", mglob.linenum, tok);
 				exitwrap(EXIT_FAILURE, NULL, top);
 			}
 		}
@@ -134,13 +134,13 @@ int main(int ac, char *av[])
 
 	if (ac != 2)
 	{
-		dprintf(2, "USAGE: monty file\n");
+		printf("USAGE: monty file\n");
 		return (EXIT_FAILURE);
 	}
 	mglob.script = fopen(av[1], "r");
 	if (mglob.script == NULL)
 	{
-		dprintf(2, "Error: Can't open file %s\n", av[1]);
+		printf("Error: Can't open file %s\n", av[1]);
 		return (EXIT_FAILURE);
 	}
 	ops = initops();
