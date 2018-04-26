@@ -36,9 +36,10 @@ void pstr(stack_t **top)
 
 	if (ptr == NULL)
 		printf("\n");
-	while (ptr != NULL && !(ptr->n > 127 || ptr->n < 1))
+	while (ptr != NULL && ptr->n <= 127 && ptr->n > 0)
 	{
-		printf("%c\n", ptr->n);
+		printf("%c", ptr->n);
 		ptr = ptr->prev;
 	}
+	printf("\n");
 }
