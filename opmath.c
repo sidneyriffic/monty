@@ -7,9 +7,7 @@ void add(stack_t **top)
 	stack_t *ptr = *top;
 	long num;
 
-	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
-	if (ptr->prev == NULL)
+	if (ptr == NULL || ptr->prev == NULL)
 		exitwrap(EXIT_FAILURE, "can't add, stack too short", *top);
 	else
 	{
