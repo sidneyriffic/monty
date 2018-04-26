@@ -25,9 +25,7 @@ void sub(stack_t **top)
 	stack_t *ptr = *top;
 	long num;
 
-	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
-	if (ptr->prev == NULL)
+	if (ptr == NULL || ptr->prev == NULL)
 		exitwrap(EXIT_FAILURE, "can't sub, stack too short", *top);
 	else
 	{
@@ -45,9 +43,7 @@ void mul(stack_t **top)
 	stack_t *ptr = *top;
 	long num;
 
-	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
-	if (ptr->prev == NULL)
+	if (ptr == NULL || ptr->prev == NULL)
 		exitwrap(EXIT_FAILURE, "can't mul, stack too short", *top);
 	else
 	{
@@ -65,9 +61,7 @@ void _div(stack_t **top)
 	stack_t *ptr = *top;
 	long num;
 
-	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
-	if (ptr->prev == NULL)
+	if (ptr == NULL || ptr->prev == NULL)
 		exitwrap(EXIT_FAILURE, "can't div, stack too short", *top);
 	else
 	{
@@ -87,9 +81,7 @@ void mod(stack_t **top)
 	stack_t *ptr = *top;
 	long num;
 
-	if (ptr == NULL)
-		exitwrap(EXIT_FAILURE, "can't pop an empty stack", *top);
-	if (ptr->prev == NULL)
+	if (ptr == NULL || ptr->prev == NULL)
 		exitwrap(EXIT_FAILURE, "can't mod, stack too short", *top);
 	else
 	{
