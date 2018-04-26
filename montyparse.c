@@ -59,34 +59,35 @@ int montyparse(optype *ops)
 			exitwrap(EXIT_FAILURE, NULL, top);
 		}
 		tok = strtok(mglob.buffer, "\n ");
-		if (tok == NULL)
-			exitwrap(EXIT_SUCCESS, NULL, top);
-		val = 0;
-		if (*tok == '#' || !strcmp(tok, "nop"))
-			;
-		else if (!strcmp(tok, "queue"))
-			mode = QUEUEMODE;
-		else if (!strcmp(tok, "stack"))
-			mode = STACKMODE;
-		else
+		if (tok != NULL)
 		{
-			while (val < MONTYOPCT && strcmp(tok, ops[val].opcode))
-				val++;
-			if (val == 0)
-			{
-				tok = strtok(NULL, "\n ");
-				if (tok == NULL || !isnumstr(tok))
-					exitwrap(EXIT_FAILURE, "usage: push integer", top);
-				ops[0].func.pushmode(&top, &bot, atoi(tok), mode);
-			}
-			else if (val < 4)
-				ops[val].func.topbot(&top, &bot);
-			else if (val < MONTYOPCT)
-				ops[val].func.toponly(&top);
+			val = 0;
+			if (*tok == '#' || !strcmp(tok, "nop"))
+				;
+			else if (!strcmp(tok, "queue"))
+				mode = QUEUEMODE;
+			else if (!strcmp(tok, "stack"))
+				mode = STACKMODE;
 			else
 			{
-				printf("L%ld: unknown instruction %s\n", mglob.linenum, tok);
-				exitwrap(EXIT_FAILURE, NULL, top);
+				while (val < MONTYOPCT && strcmp(tok, ops[val].opcode))
+					val++;
+				if (val == 0)
+				{
+					tok = strtok(NULL, "\n ");
+					if (tok == NULL || !isnumstr(tok))
+						exitwrap(EXIT_FAILURE, "usage: push integer", top);
+					ops[0].func.pushmode(&top, &bot, atoi(tok), mode);
+				}
+				else if (val < 4)
+					ops[val].func.topbot(&top, &bot);
+				else if (val < MONTYOPCT)
+					ops[val].func.toponly(&top);
+				else
+				{
+					printf("L%ld: unknown instruction %s\n", mglob.linenum, tok);
+					exitwrap(EXIT_FAILURE, NULL, top);
+				}
 			}
 		}
 		free(mglob.buffer);
