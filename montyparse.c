@@ -53,7 +53,12 @@ int montyparse(optype *ops)
 
 	while (getline(&mglob.buffer, &len, mglob.script) > 0)
 	{
-		tok = strtok(mglob.buffer, "\n\r\t ");
+		if (mglob.buffer == NULL)
+		{
+			printf("Error: malloc failed\n");
+			exitwrap(EXIT_FAILURE, NULL, top);
+		}
+		tok = strtok(mglob.buffer, "\n ");
 		if (tok == NULL)
 			exitwrap(EXIT_SUCCESS, NULL, top);
 		val = 0;
@@ -71,7 +76,7 @@ int montyparse(optype *ops)
 				return (-2);
 			if (val == 0)
 			{
-				tok = strtok(NULL, "\n\r\t ");
+				tok = strtok(NULL, "\n ");
 				if (tok == NULL || !isnumstr(tok))
 					exitwrap(EXIT_FAILURE, "usage: push integer", top);
 				ops[0].func.pushmode(&top, &bot, atoi(tok), mode);
@@ -86,6 +91,9 @@ int montyparse(optype *ops)
 				exitwrap(EXIT_FAILURE, NULL, top);
 			}
 		}
+		free(mglob.buffer);
+		mglob.buffer = NULL;
+		len = 0;
 		mglob.linenum++;
 	}
 	exitwrap(EXIT_SUCCESS, NULL, top);
