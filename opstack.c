@@ -76,6 +76,8 @@ void rotl(stack_t **top, stack_t **bot)
 {
 	stack_t *ptrt = *top, *ptrb = *bot;
 
+	if (ptrt == NULL || ptrt->prev == NULL)
+		return;
 	ptrt->next = ptrb;
 	ptrb->prev = ptrt;
 	*top = ptrt->prev;
@@ -88,6 +90,8 @@ void rotr(stack_t **top, stack_t **bot)
 {
 	stack_t *ptrt = *top, *ptrb = *bot;
 
+	if (ptrt == NULL || ptrt->prev == NULL)
+		return;
 	ptrt->next = ptrb;
 	ptrb->prev = ptrt;
 	*bot = ptrb->next;
