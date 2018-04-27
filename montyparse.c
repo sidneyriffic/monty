@@ -7,8 +7,13 @@
 
 static montyglob mglob;
 
-/* should free stack here. if exit string is NULL, assume proper text already
- * printed */
+/**
+ * exitwrap - free things and exit the program. Print error message as needed
+ *
+ * @exitcode: exit code
+ * @exitstring: error string to print, if any
+ * @top: top of stack (for freeing)
+ */
 void exitwrap(int exitcode, char *exitstring, stack_t *top)
 {
 	stack_t *ptr = top;
@@ -26,6 +31,13 @@ void exitwrap(int exitcode, char *exitstring, stack_t *top)
 	exit(exitcode);
 }
 
+/**
+ * isnumstr - checks if a string is a number
+ *
+ * @str: string to check
+ *
+ * Return: 1 if numeric, 0 otherwise
+ */
 int isnumstr(char *str)
 {
 	if (*str == '-')
@@ -33,18 +45,24 @@ int isnumstr(char *str)
 		str++;
 		if (*str < '0' || *str > '9')
 			return (0);
-		else
-			str++;
+		str++;
 	}
-	while(*str != 0)
+	while (*str != 0)
 		if (*str < '0' || *str++ > '9')
 			return (0);
 	return (1);
 }
 
-/* note that bot is updated to NULL only in the case of pushing with
+/**
+ * montyparse - parser for monty script files
+ * note that bot is updated to NULL only in the case of pushing with
  * NULL top. All other opcodes using bot should check if top is NULL
- * first. */
+ * first.
+ *
+ * @ops: array of opcodes and pointers to functions for them
+ *
+ * Return: 0 if successful
+ */
 int montyparse(optype *ops)
 {
 	size_t len = 0, val, mode = STACKMODE;
@@ -99,6 +117,11 @@ int montyparse(optype *ops)
 	return (0);
 }
 
+/**
+ * initops - initialize array of opcodes and functions for them
+ *
+ * Return: array of optypes
+ */
 optype *initops()
 {
 	static optype head[14];
@@ -135,6 +158,14 @@ optype *initops()
 	return (head);
 }
 
+/**
+ * main - parse a monty script file
+ *
+ * @ac: number of arguments
+ * @av: argument array
+ *
+ * Return: EXIT_SUCCESS on success, EXIT_FAILURE otherwise
+ */
 int main(int ac, char *av[])
 {
 	optype *ops;

@@ -1,6 +1,11 @@
 #include "monty.h"
 #include <stdio.h>
 
+/**
+ * pall - print all values as integers
+ *
+ * @top: top of stack
+ */
 void pall(stack_t **top)
 {
 	stack_t *ptr = *top;
@@ -12,6 +17,11 @@ void pall(stack_t **top)
 	}
 }
 
+/**
+ * pint - print top of stack as an integer
+ *
+ * @top: top of stack
+ */
 void pint(stack_t **top)
 {
 	if (*top == NULL)
@@ -19,6 +29,11 @@ void pint(stack_t **top)
 	printf("%d\n", (*top)->n);
 }
 
+/**
+ * pchar - print top of stack as a char
+ *
+ * @top: top of stack
+ */
 void pchar(stack_t **top)
 {
 	stack_t *ptr = *top;
@@ -30,6 +45,12 @@ void pchar(stack_t **top)
 	printf("%c\n", ptr->n);
 }
 
+/**
+ * pstr - print stack as string starting from the top
+ * stop on 0 or out of ascii bounds
+ *
+ * @top: top of stack
+ */
 void pstr(stack_t **top)
 {
 	stack_t *ptr = *top;

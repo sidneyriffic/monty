@@ -2,6 +2,11 @@
 
 #include <stdio.h>
 
+/**
+ * add - add top two stack elements. error if < 2 elements
+ *
+ * @top: top of stack
+ */
 void add(stack_t **top)
 {
 	stack_t *ptr = *top;
@@ -20,6 +25,11 @@ void add(stack_t **top)
 	}
 }
 
+/**
+ * sub - subtract top two stack elements. error if < 2 elements
+ *
+ * @top: top of stack
+ */
 void sub(stack_t **top)
 {
 	stack_t *ptr = *top;
@@ -38,6 +48,11 @@ void sub(stack_t **top)
 	}
 }
 
+/**
+ * mul - multiply top two stack elements. error if < 2 elements
+ *
+ * @top: top of stack
+ */
 void mul(stack_t **top)
 {
 	stack_t *ptr = *top;
@@ -56,6 +71,11 @@ void mul(stack_t **top)
 	}
 }
 
+/**
+ * _div - divide top two stack elements. error if < 2 elements or divby0
+ *
+ * @top: top of stack
+ */
 void _div(stack_t **top)
 {
 	stack_t *ptr = *top;
@@ -76,6 +96,11 @@ void _div(stack_t **top)
 	}
 }
 
+/**
+ * mod - get remainder top two stack elements. error if < 2 elements or divby0
+ *
+ * @top: top of stack
+ */
 void mod(stack_t **top)
 {
 	stack_t *ptr = *top;

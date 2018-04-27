@@ -2,6 +2,14 @@
 #include "monty.h"
 #include <stdio.h>
 
+/**
+ * push - pushes a value onto the stack and updates pointers
+ *
+ * @top: top of stack
+ * @bot: bottom of stack
+ * @val: value to push
+ * @mode: stack or queue mode (put on top or bottom)
+ */
 void push(stack_t **top, stack_t **bot, int val, int mode)
 {
 	stack_t *ptr;
@@ -36,6 +44,11 @@ void push(stack_t **top, stack_t **bot, int val, int mode)
 	}
 }
 
+/**
+ * pop - pop top element of stack
+ *
+ * @top: top of stack
+ */
 void pop(stack_t **top)
 {
 	stack_t *ptr = *top;
@@ -56,6 +69,12 @@ void pop(stack_t **top)
 	}
 }
 
+/**
+ * swap - swap top two values on stack and update top/bottom
+ *
+ * @top: top of stack
+ * @bot: bottom of stack
+ */
 void swap(stack_t **top, stack_t **bot)
 {
 	stack_t *ptr = *top;
@@ -72,6 +91,12 @@ void swap(stack_t **top, stack_t **bot)
 		*bot = (*bot)->prev;
 }
 
+/**
+ * rotl - "rotate left" put top of stack on bottom
+ *
+ * @top: top of stack
+ * @bot: bottom of stack
+ */
 void rotl(stack_t **top, stack_t **bot)
 {
 	stack_t *ptrt = *top, *ptrb = *bot;
@@ -86,6 +111,12 @@ void rotl(stack_t **top, stack_t **bot)
 	ptrt->prev = NULL;
 }
 
+/**
+ * rotr - "rotate right" put bottom of stack on top
+ *
+ * @top: top of stack
+ * @bot: bottom of stack
+ */
 void rotr(stack_t **top, stack_t **bot)
 {
 	stack_t *ptrt = *top, *ptrb = *bot;
