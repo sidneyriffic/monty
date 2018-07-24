@@ -74,9 +74,9 @@ This nets us an output:
 ```
 If we want to print numbers as a string, we can have a script like:
 ```
-push 48
 push 49
 push 50
+push 51
 pstr
 ```
 This gets the output "321"
